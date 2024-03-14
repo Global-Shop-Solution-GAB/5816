@@ -1,0 +1,143 @@
+Program.Sub.ScreenSU.Start
+Gui.frmUpload..Create
+Gui.frmUpload..Caption("Price Upload")
+Gui.frmUpload..Size(4905,3660)
+Gui.frmUpload..MinX(0)
+Gui.frmUpload..MinY(0)
+Gui.frmUpload..Position(0,0)
+Gui.frmUpload..BackColor(-2147483633)
+Gui.frmUpload..MaxButton(False)
+Gui.frmUpload..MinButton(False)
+Gui.frmUpload..MousePointer(0)
+Gui.frmUpload..Event(UnLoad,PriceUpload_UnLoad)
+Gui.frmUpload.lbl1.Create(Label,"Size >",True,795,255,0,135,540,True,0,"Arial",8,-2147483633,0)
+Gui.frmUpload.txtsize.Create(TextBox,"",True,1215,300,0,810,495,True,0,"Arial",8,-2147483643,1)
+Gui.frmUpload.txtsize.NumericOnly(1)
+Gui.frmUpload.txtsize.TabStop(True)
+Gui.frmUpload.txtsize.TabIndex(2)
+Gui.frmUpload.lbl2.Create(Label,"and <",True,555,255,0,2265,585,True,0,"Arial",8,-2147483633,0)
+Gui.frmUpload.txtSize1.Create(TextBox,"",True,1215,300,0,2880,495,True,0,"Arial",8,-2147483643,1)
+Gui.frmUpload.txtSize1.NumericOnly(1)
+Gui.frmUpload.txtSize1.TabStop(True)
+Gui.frmUpload.txtSize1.TabIndex(3)
+Gui.frmUpload.lbl3.Create(Label,"Shape :",True,720,255,0,2130,1035,True,0,"Arial",8,-2147483633,0)
+Gui.frmUpload.txtshape.Create(TextBox,"",True,1215,300,0,2880,945,True,0,"Arial",8,-2147483643,1)
+Gui.frmUpload.txtshape.TabStop(True)
+Gui.frmUpload.txtshape.TabIndex(4)
+Gui.frmUpload.txtshape.Mask(">")
+Gui.frmUpload.lbl4.Create(Label,"Grade :",True,645,255,0,2175,1485,True,0,"Arial",8,-2147483633,0)
+Gui.frmUpload.txtGrade.Create(TextBox,"",True,1215,300,0,2880,1410,True,0,"Arial",8,-2147483643,1)
+Gui.frmUpload.txtGrade.TabStop(True)
+Gui.frmUpload.txtGrade.TabIndex(5)
+Gui.frmUpload.txtGrade.Mask(">")
+Gui.frmUpload.lbl5.Create(Label,"Price per CWT :",True,1290,255,0,1560,1950,True,0,"Arial",8,-2147483633,0)
+Gui.frmUpload.txtCWT.Create(TextBox,"",True,1215,300,0,2880,1875,True,0,"Arial",8,-2147483643,1)
+Gui.frmUpload.txtCWT.NumericOnly(1)
+Gui.frmUpload.txtCWT.TabStop(True)
+Gui.frmUpload.txtCWT.TabIndex(6)
+Gui.frmUpload.txtloc.Create(TextBox,"",True,435,300,0,810,90,True,0,"Arial",8,-2147483643,1)
+Gui.frmUpload.txtloc.MaxLength(2)
+Gui.frmUpload.txtloc.TabStop(True)
+Gui.frmUpload.txtloc.TabIndex(1)
+Gui.frmUpload.txtloc.Mask(">")
+Gui.frmUpload.lbl6.Create(Label,"Loc :",True,645,255,0,165,180,True,0,"Arial",8,-2147483633,0)
+Gui.frmUpload.cmd1.Create(Button)
+Gui.frmUpload.cmd1.Size(855,375)
+Gui.frmUpload.cmd1.Position(13785,12195)
+Gui.frmUpload.cmdUpdate.Create(Button)
+Gui.frmUpload.cmdUpdate.Size(855,375)
+Gui.frmUpload.cmdUpdate.Position(90,2565)
+Gui.frmUpload.cmdUpdate.Caption("Update")
+Gui.frmUpload.cmdUpdate.Event(Click,cmdUpdate_Click)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.Try
+
+gui.frmUpload..Show
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.Main.End
+
+Program.Sub.PriceUpload_UnLoad.Start
+f.Intrinsic.Control.End
+Program.Sub.PriceUpload_UnLoad.End
+
+Program.Sub.cmdUpdate_Click.Start
+F.Intrinsic.Control.Try
+
+v.Local.sSQL.declare(string)
+v.Local.sPart1.declare(string)
+v.Local.sPart2.declare(string)
+v.Local.sSizeGrade.declare(string)
+
+v.Local.fCWT.declare
+v.Local.fAmt.declare
+
+
+F.Intrinsic.UI.InvokeWaitDialog("Processing...","Please Wait...")
+F.ODBC.Connection!conx.OpenCompanyConnection(300)
+'"select * from INVENTORY_MSTR  where part between '1.5000-RD-15'  and '2.5000-RD-15'  and Part Like '%-RD-15' and location = 'EY'"
+
+
+f.Intrinsic.Control.If(v.Screen.frmUpload!txtloc.text,=,"")
+	f.Intrinsic.UI.Msgbox("Location cannot be Blank")
+	gui.frmUpload.txtloc.SetFocus
+f.Intrinsic.Control.elseIf(v.Screen.frmUpload!txtSize.text,=,"")
+	f.Intrinsic.UI.Msgbox("Size cannot be Blank")
+	gui.frmUpload.txtSize.SetFocus
+f.Intrinsic.Control.elseIf(v.Screen.frmUpload!txtSize1.text,=,"")
+	f.Intrinsic.UI.Msgbox("Size cannot be Blank")
+	gui.frmUpload.txtSize1.SetFocus
+f.Intrinsic.Control.elseIf(v.Screen.frmUpload!txtshape.text,=,"")
+	f.Intrinsic.UI.Msgbox("Shape cannot be Blank")
+	gui.frmUpload.txtshape.SetFocus
+f.Intrinsic.Control.elseIf(v.Screen.frmUpload!txtGrade.text,=,"")
+	f.Intrinsic.UI.Msgbox("Grade cannot be Blank")
+	gui.frmUpload.txtGrade.SetFocus
+f.Intrinsic.Control.elseIf(v.Screen.frmUpload!txtCWT.text,=,"")
+	f.Intrinsic.UI.Msgbox("CWT cannot be Blank")
+	gui.frmUpload.txtCWT.SetFocus
+f.Intrinsic.Control.endIf
+
+f.Intrinsic.String.Build("-{0}-{1}",v.Screen.frmUpload!txtshape.text,v.Screen.frmUpload!txtGrade.text,v.Local.sSizeGrade)
+
+f.Intrinsic.String.Build("{0}{1}",v.Screen.frmUpload!txtSize.text,v.Local.sSizeGrade,v.Local.sPart1)
+f.Intrinsic.String.Build("{0}{1}",v.Screen.frmUpload!txtSize1.text,v.Local.sSizeGrade,v.Local.sPart2)
+
+v.Local.fCWT.Set(v.Screen.frmUpload!txtCWT.text)
+f.Intrinsic.Math.DIV(v.Local.fCWT,100,v.Local.fAmt)
+
+
+f.Intrinsic.String.Build("update INVENTORY_COST set COST = {3}, MATL = {3},LABOR = 0,OVHD = 0,OUTS = 0,FREIGHT = 0,OTH = 0 from INVENTORY_mstr  where INVENTORY_mstr.part = INVENTORY_COST.part and location = locn and INVENTORY_COST.part between '{0}'  and '{1}'  and INVENTORY_COST.Part Like '%{2}' and locn = '{4}' and Product_Line IN ('01','02','03','04','05')",v.Local.sPart1,v.Local.sPart2,v.Local.sSizeGrade,v.Local.fAmt,v.Screen.frmUpload!txtloc.text,v.Local.sSQL)
+
+f.ODBC.Connection!conx.execute(v.Local.sSQL)
+
+f.ODBC.Connection!conx.Close
+F.Intrinsic.UI.CloseWaitDialog
+f.Intrinsic.UI.Msgbox("Price updated successfully")
+
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+
+
+Program.Sub.cmdUpdate_Click.End
+
+Program.Sub.Catching.Start
+v.Local.sError.declare(string)
+F.Intrinsic.UI.CloseWaitDialog
+F.Intrinsic.String.Build("Project: {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}","GCG_5725_PyrlExport.g2u",V.Ambient.NewLine,v.Args.sub,V.Args.errorno,V.args.errordesc,V.Local.sError)
+f.Intrinsic.UI.Msgbox(v.Local.sError)
+F.Intrinsic.Control.CallSub(PriceUpload_UnLoad)
+Program.Sub.Catching.End
+
+Program.Sub.Comments.Start
+${$0$}$GCG_5816_MassPriceUpdate.g2u$}$SUPERVSR$}$1/2/2020 7:24:10 PM$}$True
+Program.Sub.Comments.End
